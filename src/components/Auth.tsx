@@ -60,10 +60,6 @@ export default function Auth({ onLogin, onBack }: AuthProps) {
       };
       localStorage.setItem('blog_author', JSON.stringify(newAuthor));
       localStorage.setItem('blog_session', JSON.stringify(newAuthor));
-      
-      // Ajoute automatiquement l'auteur à la newsletter
-      addSubscriber(AUTHOR_EMAIL, 'Erno Ngoy');
-      
       onLogin(newAuthor);
     }
   };

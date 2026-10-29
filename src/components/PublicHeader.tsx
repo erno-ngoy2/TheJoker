@@ -5,6 +5,7 @@ interface PublicHeaderProps {
   currentView: string;
   onNavigate: (view: string) => void;
   onLoginClick: () => void;
+  onNewsletterClick: () => void;
   isLoggedIn: boolean;
   authorName: string;
 }
@@ -13,6 +14,7 @@ export default function PublicHeader({
   currentView,
   onNavigate,
   onLoginClick,
+  onNewsletterClick,
   isLoggedIn,
   authorName,
 }: PublicHeaderProps) {
@@ -63,12 +65,18 @@ export default function PublicHeader({
 
           {/* Actions */}
           <div className="flex items-center gap-4">
+            <button
+              onClick={onNewsletterClick}
+              className="hidden sm:inline-flex items-center gap-2 text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
+            >
+              <MailIcon size={14} />
+              Newsletter
+            </button>
             <a
               href="mailto:ernongoy@gmail.com"
               className="hidden sm:inline-flex items-center gap-2 text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
             >
-              <MailIcon size={14} />
-              Me contacter
+              Contact
             </a>
             <button
               onClick={onLoginClick}
@@ -104,6 +112,12 @@ export default function PublicHeader({
             }`}
           >
             Articles
+          </button>
+          <button
+            onClick={onNewsletterClick}
+            className="text-xs tracking-wide text-[#9BA3B5] whitespace-nowrap"
+          >
+            Newsletter
           </button>
           <a
             href="mailto:ernongoy@gmail.com"

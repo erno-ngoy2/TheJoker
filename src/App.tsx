@@ -6,7 +6,7 @@ import PublicHeader from './components/PublicHeader';
 import PublicHome from './components/PublicHome';
 import PublicArticleView from './components/PublicArticleView';
 import AuthorDashboard from './components/AuthorDashboard';
-import NewsletterSignup from './components/NewsletterSignup';
+import ReaderSignup from './components/ReaderSignup';
 
 export default function App() {
   const [author, setAuthor] = useState<Author | null>(null);
@@ -14,6 +14,7 @@ export default function App() {
   const [currentView, setCurrentView] = useState<string>('home');
   const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
   const [showAuth, setShowAuth] = useState(false);
+  const [showReaderSignup, setShowReaderSignup] = useState(false);
 
   // Load author session
   useEffect(() => {
@@ -84,10 +85,27 @@ export default function App() {
     return <Auth onLogin={handleLogin} onBack={() => setShowAuth(false)} />;
   }
 
+  // If showing reader signup
+  if (showReaderSignup) {
+    return (
+      <div className="min-h-screen bg-[#0B0F19] flex items-center justify-center px-6">
+        <div className="w-full max-w-md">
+          <button
+            onClick={() => setShowReaderSignup(false)}
+            className="text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline mb-12"
+          >
+            ← Retour au blog
+          </button>
+          <ReaderSignup />
+        </div>
+      </div>
+    );
+  }
+
   // If logged in as author — show dashboard
   if (author && author.email === AUTHOR_EMAIL && currentView !== 'home' && currentView !== 'article' && currentView !== 'recherches' && currentView !== 'decouvertes' && currentView !== 'articles') {
     // Check if we're in dashboard mode
-    if (currentView === 'dashboard' || currentView === 'write' || currentView === 'profile') {
+    if (currentView === 'dashboard' || currentView === 'write' || currentView === 'profile' || currentView === 'newsletter') {
       return (
         <AuthorDashboard
           author={author}
@@ -123,6 +141,7 @@ export default function App() {
             setShowAuth(true);
           }
         }}
+        onNewsletterClick={() => setShowReaderSignup(true)}
         isLoggedIn={!!author}
         authorName={author?.name || 'Erno Ngoy'}
       />
@@ -148,11 +167,6 @@ export default function App() {
           onArticleClick={handleArticleClick}
         />
       )}
-
-      {/* Newsletter Signup */}
-      <section className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 py-16">
-        <NewsletterSignup />
-      </section>
 
       {/* Footer */}
       <footer className="border-t border-white/[0.06] mt-20">

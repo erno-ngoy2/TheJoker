@@ -3,6 +3,7 @@ import { Article, Author } from '../types';
 import { LinkIcon, ImageIcon, UploadIcon, EditIcon, TrashIcon, PlusIcon, PenIcon, HomeIcon, UserIcon, LogoutIcon, CheckIcon, AlertIcon, FileIcon, MailIcon } from './Icons';
 import { sendNewArticleNotification, getSubscribers } from '../services/newsletter';
 import NewsletterManager from './NewsletterManager';
+import NewsletterCounter from './NewsletterCounter';
 
 interface AuthorDashboardProps {
   author: Author;
@@ -134,13 +135,18 @@ export default function AuthorDashboard({
       {/* Content */}
       <main className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 py-12 md:py-16">
         {view === 'list' && (
-          <ArticleList
-            articles={articles}
-            onNew={handleNew}
-            onEdit={handleEdit}
-            onDelete={onDeleteArticle}
-            onClick={onArticleClick}
-          />
+          <>
+            <div className="mb-8">
+              <NewsletterCounter onViewList={() => setView('newsletter')} />
+            </div>
+            <ArticleList
+              articles={articles}
+              onNew={handleNew}
+              onEdit={handleEdit}
+              onDelete={onDeleteArticle}
+              onClick={onArticleClick}
+            />
+          </>
         )}
         {view === 'write' && (
           <ArticleEditor

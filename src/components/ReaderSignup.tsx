@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { addSubscriber } from '../services/newsletter';
 import { MailIcon, CheckIcon, AlertIcon } from './Icons';
 
-export default function NewsletterSignup() {
+export default function ReaderSignup() {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');

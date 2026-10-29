@@ -1,15 +1,9 @@
-export interface User {
+export interface Author {
   email: string;
   password: string;
   name: string;
   bio?: string;
-  avatar?: string;
-  socialLinks?: {
-    github?: string;
-    twitter?: string;
-    linkedin?: string;
-    website?: string;
-  };
+  location?: string;
 }
 
 export interface Article {
@@ -21,6 +15,17 @@ export interface Article {
   date: string;
   tags: string[];
   images?: string[];
+  featured?: boolean;
 }
 
-export type ViewMode = 'home' | 'write' | 'article' | 'recherches' | 'decouvertes' | 'articles' | 'profile';
+export type ViewMode =
+  | 'home'
+  | 'write'
+  | 'article'
+  | 'recherches'
+  | 'decouvertes'
+  | 'articles'
+  | 'profile';
+
+// Constante : seul cet email peut publier
+export const AUTHOR_EMAIL = 'ernongoy@gmail.com';

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Author, AUTHOR_EMAIL } from '../types';
+import { addSubscriber } from '../services/newsletter';
 
 interface AuthProps {
   onLogin: (author: Author) => void;
@@ -59,6 +60,10 @@ export default function Auth({ onLogin, onBack }: AuthProps) {
       };
       localStorage.setItem('blog_author', JSON.stringify(newAuthor));
       localStorage.setItem('blog_session', JSON.stringify(newAuthor));
+      
+      // Ajoute automatiquement l'auteur à la newsletter
+      addSubscriber(AUTHOR_EMAIL, 'Erno Ngoy');
+      
       onLogin(newAuthor);
     }
   };
@@ -92,14 +97,13 @@ export default function Auth({ onLogin, onBack }: AuthProps) {
             <label className="block text-xs text-[#5C6478] tracking-wide uppercase mb-2">
               Email
             </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={AUTHOR_EMAIL}
-              className="w-full px-0 py-3 bg-transparent border-b border-white/[0.08] text-[#E8E6E3] placeholder-[#3D4557] focus:outline-none focus:border-[#4A6FA5] transition-colors text-sm"
-            />
-          </div>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="votre@email.com"
+                className="w-full px-0 py-3 bg-transparent border-b border-white/[0.08] text-[#E8E6E3] placeholder-[#3D4557] focus:outline-none focus:border-[#4A6FA5] transition-colors text-sm"
+              />          </div>
 
           <div>
             <label className="block text-xs text-[#5C6478] tracking-wide uppercase mb-2">

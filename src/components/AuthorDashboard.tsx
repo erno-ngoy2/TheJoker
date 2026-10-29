@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { Article, Author } from '../types';
-import { LinkIcon, ImageIcon, UploadIcon, EditIcon, TrashIcon, PlusIcon, PenIcon, HomeIcon, UserIcon, LogoutIcon, CheckIcon, AlertIcon, FileIcon } from './Icons';
+import { LinkIcon, ImageIcon, UploadIcon, EditIcon, TrashIcon, PlusIcon, PenIcon, HomeIcon, UserIcon, LogoutIcon, CheckIcon, AlertIcon, FileIcon, MailIcon } from './Icons';
+import { sendNewArticleNotification, getSubscribers } from '../services/newsletter';
+import NewsletterManager from './NewsletterManager';
 
 interface AuthorDashboardProps {
   author: Author;
@@ -13,7 +15,7 @@ interface AuthorDashboardProps {
   onBackToPublic: () => void;
 }
 
-type DashboardView = 'list' | 'write' | 'profile';
+type DashboardView = 'list' | 'write' | 'profile' | 'newsletter';
 
 export default function AuthorDashboard({
   author,
@@ -38,10 +40,24 @@ export default function AuthorDashboard({
     setView('write');
   };
 
-  const handleSave = (article: Article) => {
+  const handleSave = async (article: Article) => {
     onSaveArticle(article);
     setEditingArticle(null);
     setView('list');
+    
+    // Envoie un email aux abonnés de la newsletter
+    const subscribers = getSubscribers();
+    if (subscribers.length > 0) {
+      const articleUrl = `${window.location.origin}/#/article/${article.id}`;
+      const result = await sendNewArticleNotification(
+        article.title,
+        article.excerpt,
+        articleUrl
+      );
+      
+      // Affiche une notification (pourrait être amélioré avec un toast)
+      alert(result.message);
+    }
   };
 
   return (
@@ -75,6 +91,15 @@ export default function AuthorDashboard({
                 >
                   <PenIcon size={14} />
                   Écrire
+                </button>
+                <button
+                  onClick={() => setView('newsletter')}
+                  className={`flex items-center gap-2 text-xs tracking-[0.15em] uppercase transition-colors ${
+                    view === 'newsletter' ? 'text-[#E8E6E3]' : 'text-[#5C6478] hover:text-[#9BA3B5]'
+                  }`}
+                >
+                  <MailIcon size={14} />
+                  Newsletter
                 </button>
                 <button
                   onClick={() => setView('profile')}
@@ -123,6 +148,9 @@ export default function AuthorDashboard({
             onSave={handleSave}
             onCancel={() => setView('list')}
           />
+        )}
+        {view === 'newsletter' && (
+          <NewsletterManager />
         )}
         {view === 'profile' && (
           <ProfileEditor author={author} onUpdate={onUpdateAuthor} />

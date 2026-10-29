@@ -6,6 +6,7 @@ import PublicHeader from './components/PublicHeader';
 import PublicHome from './components/PublicHome';
 import PublicArticleView from './components/PublicArticleView';
 import AuthorDashboard from './components/AuthorDashboard';
+import NewsletterSignup from './components/NewsletterSignup';
 
 export default function App() {
   const [author, setAuthor] = useState<Author | null>(null);
@@ -147,6 +148,11 @@ export default function App() {
           onArticleClick={handleArticleClick}
         />
       )}
+
+      {/* Newsletter Signup */}
+      <section className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 py-16">
+        <NewsletterSignup />
+      </section>
 
       {/* Footer */}
       <footer className="border-t border-white/[0.06] mt-20">

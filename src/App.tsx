@@ -5,6 +5,7 @@ import Sidebar from './components/Sidebar';
 import ArticleForm from './components/ArticleForm';
 import ArticleCard from './components/ArticleCard';
 import ArticleView from './components/ArticleView';
+import Profile from './components/Profile';
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -80,6 +81,10 @@ export default function App() {
     setCurrentView('article');
   };
 
+  const handleUpdateUser = (updatedUser: User) => {
+    setUser(updatedUser);
+  };
+
   const filteredArticles = articles.filter(article => {
     const matchesSearch = searchQuery === '' || 
       article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -99,6 +104,11 @@ export default function App() {
   }
 
   const renderContent = () => {
+    // Profile View
+    if (currentView === 'profile') {
+      return <Profile user={user} onUpdate={handleUpdateUser} />;
+    }
+
     // Article View
     if (currentView === 'article' && selectedArticle) {
       return (
@@ -124,7 +134,7 @@ export default function App() {
 
     // Home / Category views
     const viewTitles: Record<string, { title: string; subtitle: string; icon: string }> = {
-      home: { title: 'Accueil', subtitle: 'Bienvenue sur votre blog personnel', icon: '🏠' },
+      home: { title: 'Accueil', subtitle: `Bienvenue sur votre blog personnel, ${user.name.split(' ')[0]}`, icon: '🏠' },
       recherches: { title: 'Recherches', subtitle: 'Vos travaux de recherche', icon: '🔬' },
       decouvertes: { title: 'Découvertes', subtitle: 'Vos trouvailles et insights', icon: '💡' },
       articles: { title: 'Articles', subtitle: 'Tous vos articles publiés', icon: '📝' },
@@ -287,11 +297,9 @@ export default function App() {
               </button>
               <div className="hidden sm:flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
+                  <span className="text-white text-xs font-bold">EN</span>
                 </div>
-                <span className="text-white font-semibold">Mon Blog</span>
+                <span className="text-white font-semibold">Blog Erno Ngoy</span>
               </div>
             </div>
 
@@ -305,12 +313,15 @@ export default function App() {
                 </svg>
                 Écrire
               </button>
-              <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleNavigate('profile')}
+                className="flex items-center gap-2"
+              >
                 <div className="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-bold">
                   {user.name.charAt(0).toUpperCase()}
                 </div>
                 <span className="hidden md:block text-sm text-gray-300">{user.name}</span>
-              </div>
+              </button>
             </div>
           </div>
         </header>

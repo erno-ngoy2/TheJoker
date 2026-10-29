@@ -7,6 +7,89 @@ interface ArticleViewProps {
   onDelete?: () => void;
 }
 
+// Parse content to render links and images as clickable/viewable elements
+function parseContent(content: string): React.ReactNode[] {
+  const paragraphs = content.split('\n').filter(p => p.trim());
+  
+  return paragraphs.map((paragraph, pIndex) => {
+    // Parse inline markdown: links [text](url) and images ![alt](url)
+    const elements: React.ReactNode[] = [];
+    const regex = /(!?\[([^\]]*)\]\(([^)]+)\))|(\bhttps?:\/\/[^\s<]+[^<.,:;"')\]\s])/g;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(paragraph)) !== null) {
+      // Add text before match
+      if (match.index > lastIndex) {
+        elements.push(paragraph.substring(lastIndex, match.index));
+      }
+
+      if (match[1]) {
+        // Markdown link or image
+        const isImage = match[1].startsWith('!');
+        const altText = match[2];
+        const url = match[3];
+
+        if (isImage) {
+          elements.push(
+            <span key={`img-${pIndex}-${match.index}`} className="inline-block my-2">
+              <img
+                src={url}
+                alt={altText || 'image'}
+                className="max-w-full rounded-xl border border-white/10 shadow-lg"
+                style={{ maxHeight: '400px' }}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                }}
+              />
+              {altText && <p className="text-gray-500 text-xs mt-1 italic">{altText}</p>}
+            </span>
+          );
+        } else {
+          elements.push(
+            <a
+              key={`link-${pIndex}-${match.index}`}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-purple-400 hover:text-purple-300 underline decoration-purple-400/30 hover:decoration-purple-300 transition-colors"
+            >
+              {altText || url}
+            </a>
+          );
+        }
+      } else if (match[4]) {
+        // Plain URL
+        const url = match[4];
+        elements.push(
+          <a
+            key={`url-${pIndex}-${match.index}`}
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-purple-400 hover:text-purple-300 underline decoration-purple-400/30 hover:decoration-purple-300 transition-colors break-all"
+          >
+            {url}
+          </a>
+        );
+      }
+
+      lastIndex = match.index + match[0].length;
+    }
+
+    // Add remaining text
+    if (lastIndex < paragraph.length) {
+      elements.push(paragraph.substring(lastIndex));
+    }
+
+    return (
+      <p key={pIndex} className="text-gray-300 leading-relaxed mb-4 text-lg">
+        {elements.length > 0 ? elements : paragraph}
+      </p>
+    );
+  });
+}
+
 export default function ArticleView({ article, onBack, onEdit, onDelete }: ArticleViewProps) {
   const categoryConfig = {
     recherche: { label: 'Recherche', color: 'from-blue-500 to-cyan-500', icon: '🔬' },
@@ -21,7 +104,7 @@ export default function ArticleView({ article, onBack, onEdit, onDelete }: Artic
     day: 'numeric',
   });
 
-  const paragraphs = article.content.split('\n').filter(p => p.trim());
+  const renderedContent = parseContent(article.content);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -95,12 +178,27 @@ export default function ArticleView({ article, onBack, onEdit, onDelete }: Artic
 
       {/* Article Content */}
       <article className="prose prose-invert max-w-none">
-        {paragraphs.map((paragraph, i) => (
-          <p key={i} className="text-gray-300 leading-relaxed mb-4 text-lg">
-            {paragraph}
-          </p>
-        ))}
+        {renderedContent}
       </article>
+
+      {/* Attached Images */}
+      {article.images && article.images.length > 0 && (
+        <div className="mt-8 pt-8 border-t border-white/10">
+          <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
+            <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            Images jointes
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {article.images.map((img, i) => (
+              <div key={i} className="rounded-xl overflow-hidden border border-white/10">
+                <img src={img} alt={`Image ${i + 1}`} className="w-full h-48 object-cover" />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <div className="mt-12 pt-8 border-t border-white/10">

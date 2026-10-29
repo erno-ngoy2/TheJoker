@@ -1,4 +1,5 @@
 import { Article } from '../types';
+import { ArrowRightIcon } from './Icons';
 
 interface PublicHomeProps {
   articles: Article[];
@@ -108,7 +109,7 @@ export default function PublicHome({
                 </p>
                 <span className="inline-flex items-center gap-2 text-sm text-[#E8E6E3] group-hover:gap-3 transition-all">
                   Lire la note
-                  <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+                  <ArrowRightIcon size={14} className="inline-block transition-transform group-hover:translate-x-1" />
                 </span>
               </button>
             </article>

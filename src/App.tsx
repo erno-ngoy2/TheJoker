@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Author, Article, ViewMode, AUTHOR_EMAIL } from './types';
+import { ArrowRightIcon, MailIcon } from './components/Icons';
 import Auth from './components/Auth';
 import PublicHeader from './components/PublicHeader';
 import PublicHome from './components/PublicHome';
@@ -187,7 +188,7 @@ export default function App() {
                 className="inline-flex items-center gap-2 text-sm text-[#E8E6E3] hover:text-white transition-colors link-underline"
               >
                 ernongoy@gmail.com
-                <span className="text-[#4A6FA5]">→</span>
+                <ArrowRightIcon size={14} className="text-[#4A6FA5]" />
               </a>
               <p className="text-[#5C6478] text-xs mt-4 leading-relaxed">
                 Pour toute question, collaboration ou simplement échanger.

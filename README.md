@@ -28,7 +28,7 @@ Seul `ernongoy@gmail.com` peut publier. Les visiteurs lisent sans authentificati
 - Compositions asymétriques, grilles 12 colonnes
 - Grands espaces vides, rythme éditorial
 - Micro-interactions discrètes (hover, transitions)
-- Zéro emoji dans l'interface
+- Zéro emoji dans l'interface — icônes SVG inline élégantes (Lucide-style)
 
 ## Fonctionnalités
 
@@ -57,6 +57,39 @@ Seul `ernongoy@gmail.com` peut publier. Les visiteurs lisent sans authentificati
 - Vite
 - LocalStorage (persistance côté client)
 - Google Fonts (Fraunces + DM Sans)
+- Icônes SVG inline (composant `Icons.tsx`, style Lucide)
+
+## Icônes
+
+Toutes les icônes sont des composants SVG React personnalisés dans `src/components/Icons.tsx`. Pas de bibliothèque externe, pas d'emojis.
+
+Icônes disponibles :
+- Navigation : `ArrowLeftIcon`, `ArrowRightIcon`, `HomeIcon`, `MenuIcon`
+- Actions : `EditIcon`, `TrashIcon`, `PlusIcon`, `CheckIcon`, `AlertIcon`
+- Médias : `ImageIcon`, `UploadIcon`, `LinkIcon`
+- Interface : `SearchIcon`, `CloseIcon`, `UserIcon`, `PenIcon`, `FileIcon`
+- Catégories : `MicroscopeIcon` (Recherches), `LightbulbIcon` (Découvertes), `BookIcon` (Articles)
+- Contact : `MailIcon`, `LogoutIcon`
+
+Usage :
+```tsx
+import { ArrowRightIcon } from './Icons';
+<ArrowRightIcon size={16} className="text-[#4A6FA5]" />
+```
+
+## Stockage des images
+
+Les images téléversées sont converties en **base64** et stockées dans le `localStorage` du navigateur.
+
+**Limites :**
+- 5 Mo maximum par image
+- ~5 Mo de stockage total (localStorage)
+- Recommandé de compresser les images avant upload
+
+**Alternatives pour plus d'espace :**
+- Insérer des images par URL externe (Imgur, Cloudinary, etc.)
+- Placer les images dans `public/images/` et les référencer par chemin
+- Voir `STOCKAGE_IMAGES.md` pour les détails complets
 
 ## Installation
 
@@ -86,6 +119,7 @@ Le site est 100% statique. Déployable sur :
 ```
 src/
 ├── components/
+│   ├── Icons.tsx             # Bibliothèque d'icônes SVG
 │   ├── Auth.tsx              # Connexion auteur
 │   ├── PublicHeader.tsx      # Navigation publique
 │   ├── PublicHome.tsx        # Page d'accueil éditoriale

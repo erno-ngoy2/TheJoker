@@ -1,4 +1,5 @@
 import { Article } from '../types';
+import { ArrowLeftIcon } from './Icons';
 
 interface PublicArticleViewProps {
   article: Article;
@@ -115,9 +116,10 @@ export default function PublicArticleView({
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 pt-8">
         <button
           onClick={onBack}
-          className="text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
+          className="inline-flex items-center gap-2 text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
         >
-          ← Retour aux notes
+          <ArrowLeftIcon size={14} />
+          Retour aux notes
         </button>
       </div>
 
@@ -214,9 +216,10 @@ export default function PublicArticleView({
       <div className="max-w-[1400px] mx-auto px-6 md:px-10 lg:px-16 py-12 border-t border-white/[0.06]">
         <button
           onClick={onBack}
-          className="text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
+          className="inline-flex items-center gap-2 text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
         >
-          ← Retour aux notes
+          <ArrowLeftIcon size={14} />
+          Retour aux notes
         </button>
       </div>
     </article>

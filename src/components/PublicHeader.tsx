@@ -1,4 +1,5 @@
 import { Article } from '../types';
+import { MailIcon, UserIcon } from './Icons';
 
 interface PublicHeaderProps {
   currentView: string;
@@ -64,8 +65,9 @@ export default function PublicHeader({
           <div className="flex items-center gap-4">
             <a
               href="mailto:ernongoy@gmail.com"
-              className="hidden sm:inline text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
+              className="hidden sm:inline-flex items-center gap-2 text-sm text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors link-underline"
             >
+              <MailIcon size={14} />
               Me contacter
             </a>
             <button

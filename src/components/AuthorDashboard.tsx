@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Article, Author } from '../types';
+import { LinkIcon, ImageIcon, UploadIcon, EditIcon, TrashIcon, PlusIcon, PenIcon, HomeIcon, UserIcon, LogoutIcon, CheckIcon, AlertIcon, FileIcon } from './Icons';
 
 interface AuthorDashboardProps {
   author: Author;
@@ -59,26 +60,29 @@ export default function AuthorDashboard({
               <nav className="hidden md:flex items-center gap-6">
                 <button
                   onClick={() => setView('list')}
-                  className={`text-xs tracking-[0.15em] uppercase transition-colors ${
+                  className={`flex items-center gap-2 text-xs tracking-[0.15em] uppercase transition-colors ${
                     view === 'list' ? 'text-[#E8E6E3]' : 'text-[#5C6478] hover:text-[#9BA3B5]'
                   }`}
                 >
+                  <FileIcon size={14} />
                   Notes
                 </button>
                 <button
                   onClick={handleNew}
-                  className={`text-xs tracking-[0.15em] uppercase transition-colors ${
+                  className={`flex items-center gap-2 text-xs tracking-[0.15em] uppercase transition-colors ${
                     view === 'write' ? 'text-[#E8E6E3]' : 'text-[#5C6478] hover:text-[#9BA3B5]'
                   }`}
                 >
+                  <PenIcon size={14} />
                   Écrire
                 </button>
                 <button
                   onClick={() => setView('profile')}
-                  className={`text-xs tracking-[0.15em] uppercase transition-colors ${
+                  className={`flex items-center gap-2 text-xs tracking-[0.15em] uppercase transition-colors ${
                     view === 'profile' ? 'text-[#E8E6E3]' : 'text-[#5C6478] hover:text-[#9BA3B5]'
                   }`}
                 >
+                  <UserIcon size={14} />
                   Profil
                 </button>
               </nav>
@@ -92,9 +96,10 @@ export default function AuthorDashboard({
               </button>
               <button
                 onClick={onLogout}
-                className="text-xs text-[#5C6478] hover:text-[#9BA3B5] transition-colors"
+                className="flex items-center gap-2 text-xs text-[#5C6478] hover:text-[#9BA3B5] transition-colors"
               >
-                Déconnexion
+                <LogoutIcon size={14} />
+                <span className="hidden sm:inline">Déconnexion</span>
               </button>
             </div>
           </div>
@@ -169,8 +174,9 @@ function ArticleList({
         </div>
         <button
           onClick={onNew}
-          className="text-sm text-[#E8E6E3] hover:text-white transition-colors border border-white/[0.08] hover:border-white/[0.15] px-5 py-2.5 rounded-sm btn-press"
+          className="flex items-center gap-2 text-sm text-[#E8E6E3] hover:text-white transition-colors border border-white/[0.08] hover:border-white/[0.15] px-5 py-2.5 rounded-sm btn-press"
         >
+          <PlusIcon size={14} />
           Nouvelle note
         </button>
       </div>
@@ -211,20 +217,24 @@ function ArticleList({
                   {article.title}
                 </h3>
               </button>
-              <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                 <button
                   onClick={() => onEdit(article)}
-                  className="text-xs text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors px-3 py-1.5"
+                  className="flex items-center gap-1.5 text-xs text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors px-3 py-1.5 rounded-sm hover:bg-white/[0.04]"
+                  title="Modifier"
                 >
-                  Modifier
+                  <EditIcon size={14} />
+                  <span className="hidden sm:inline">Modifier</span>
                 </button>
                 <button
                   onClick={() => {
                     if (confirm('Supprimer cette note ?')) onDelete(article.id);
                   }}
-                  className="text-xs text-[#9BA3B5] hover:text-[#C45C5C] transition-colors px-3 py-1.5"
+                  className="flex items-center gap-1.5 text-xs text-[#9BA3B5] hover:text-[#C45C5C] transition-colors px-3 py-1.5 rounded-sm hover:bg-white/[0.04]"
+                  title="Supprimer"
                 >
-                  Supprimer
+                  <TrashIcon size={14} />
+                  <span className="hidden sm:inline">Supprimer</span>
                 </button>
               </div>
             </div>
@@ -389,29 +399,33 @@ function ArticleEditor({
             Contenu
           </label>
           {/* Toolbar */}
-          <div className="flex items-center gap-3 mb-3 pb-3 border-b border-white/[0.04]">
+          <div className="flex items-center gap-1 mb-3 pb-3 border-b border-white/[0.04]">
             <button
               type="button"
               onClick={() => setShowLinkDialog(true)}
-              className="text-xs text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#9BA3B5] hover:text-[#E8E6E3] hover:bg-white/[0.04] rounded-sm transition-all"
+              title="Insérer un lien"
             >
-              Insérer un lien
+              <LinkIcon size={14} />
+              <span className="hidden sm:inline">Lien</span>
             </button>
-            <span className="text-[#3D4557]">·</span>
             <button
               type="button"
               onClick={() => setShowImageDialog(true)}
-              className="text-xs text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#9BA3B5] hover:text-[#E8E6E3] hover:bg-white/[0.04] rounded-sm transition-all"
+              title="Image via URL"
             >
-              Image (URL)
+              <ImageIcon size={14} />
+              <span className="hidden sm:inline">URL</span>
             </button>
-            <span className="text-[#3D4557]">·</span>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="text-xs text-[#9BA3B5] hover:text-[#E8E6E3] transition-colors"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-[#9BA3B5] hover:text-[#E8E6E3] hover:bg-white/[0.04] rounded-sm transition-all"
+              title="Téléverser une image"
             >
-              Uploader une image
+              <UploadIcon size={14} />
+              <span className="hidden sm:inline">Téléverser</span>
             </button>
             <input
               ref={fileInputRef}
@@ -730,10 +744,16 @@ function ProfileEditor({
         </section>
 
         {message && (
-          <p className="text-[#5C9B6E] text-sm">{message}</p>
+          <p className="flex items-center gap-2 text-[#5C9B6E] text-sm">
+            <CheckIcon size={14} />
+            {message}
+          </p>
         )}
         {error && (
-          <p className="text-[#C45C5C] text-sm">{error}</p>
+          <p className="flex items-center gap-2 text-[#C45C5C] text-sm">
+            <AlertIcon size={14} />
+            {error}
+          </p>
         )}
       </div>
     </div>

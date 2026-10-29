@@ -1,5 +1,4 @@
-import { Article } from '../types';
-import { MailIcon, UserIcon } from './Icons';
+import { MailIcon } from './Icons';
 
 interface PublicHeaderProps {
   currentView: string;

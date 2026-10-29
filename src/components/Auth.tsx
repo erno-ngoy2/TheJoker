@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Author, AUTHOR_EMAIL } from '../types';
-import { addSubscriber } from '../services/newsletter';
 
 interface AuthProps {
   onLogin: (author: Author) => void;
